@@ -1,8 +1,6 @@
 package promoNice.API.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -11,6 +9,8 @@ import java.util.Date;
 public class UsuarioModel {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Isso fará com que o banco gere o valor automaticamente
+    @Column(name = "id_usuarios")
     public Integer idUsuarios;
 
     @Column (name = "nome")
