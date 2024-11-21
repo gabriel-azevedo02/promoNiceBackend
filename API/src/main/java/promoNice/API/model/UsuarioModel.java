@@ -10,8 +10,8 @@ public class UsuarioModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Isso fará com que o banco gere o valor automaticamente
-    @Column(name = "id_usuarios")
-    public Integer idUsuarios;
+    @Column(name = "id")
+    public Integer id;
 
     @Column (name = "nome")
     public String nome;
@@ -28,11 +28,11 @@ public class UsuarioModel {
 
 
     public Integer getIdUsuarios() {
-        return idUsuarios;
+        return id;
     }
 
-    public void setIdUsuarios(Integer idUsuarios) {
-        this.idUsuarios = idUsuarios;
+    public void setIdUsuarios(Integer id) {
+        this.id = id;
     }
 
     public String getEmail() {
