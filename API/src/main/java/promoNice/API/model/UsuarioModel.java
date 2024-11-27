@@ -26,15 +26,6 @@ public class UsuarioModel {
     public LocalDateTime dataCriacao;
 
 
-
-    public Integer getIdUsuarios() {
-        return id;
-    }
-
-    public void setIdUsuarios(Integer id) {
-        this.id = id;
-    }
-
     public String getEmail() {
         return email;
     }
