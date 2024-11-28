@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import promoNice.API.dto.ProdutoDTO;
+import promoNice.API.dto.PromocaoDTO;
 import promoNice.API.model.ProdutoModel;
 import promoNice.API.model.PromocaoModel;
 import promoNice.API.model.UsuarioModel;
@@ -31,13 +32,22 @@ public class ProdutoController {
 
     @GetMapping("/listar-todos")
     public ResponseEntity<List<ProdutoDTO>> listarTodos() {
+        // Inicializando o ModelMapper com configuração
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.typeMap(PromocaoModel.class, PromocaoDTO.class)
+                .addMappings(mapper -> mapper.skip(PromocaoDTO::setProduto));
+
+        // Mapeando lista de ProdutoModel para ProdutoDTO
         List<ProdutoModel> produtos = (List<ProdutoModel>) produtoRepository.findAll();
-        List<ProdutoDTO> produtosDTO = produtos.stream().map(produto -> modelMapper.map(produto, ProdutoDTO.class)).toList();
-        return ResponseEntity.ok(produtosDTO); // Retorna a lista de DTOs.
+        List<ProdutoDTO> produtosDTO = produtos.stream()
+                .map(produto -> modelMapper.map(produto, ProdutoDTO.class))
+                .toList();
+
+        return ResponseEntity.ok(produtosDTO);
     }
 
     // Método para buscar um produto por ID
-    @GetMapping("/{id}")
+    @GetMapping("/listar-por/{id}")
     public ResponseEntity<ProdutoDTO> buscarPorId(@PathVariable Integer id) {
         Optional<ProdutoModel> produto = produtoRepository.findById(id);
         if (produto.isPresent()) {
