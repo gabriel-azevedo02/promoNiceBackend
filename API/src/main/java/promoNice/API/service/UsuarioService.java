@@ -13,8 +13,8 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    public boolean verificarCredenciais(String email, String senha) {
-        Optional<UsuarioModel> usuario = usuarioRepository.findByEmailAndSenha(email, senha);
-        return usuario.isPresent();
+    public UsuarioModel buscarPorEmailESenha(String email, String senha) {
+        // Verificar o usuário no banco de dados
+        return usuarioRepository.findByEmailAndSenha(email, senha);
     }
 }

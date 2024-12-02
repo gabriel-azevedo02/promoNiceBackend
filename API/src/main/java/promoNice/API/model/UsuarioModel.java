@@ -11,6 +11,7 @@ public class UsuarioModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Isso fará com que o banco gere o valor automaticamente
     @Column(name = "id")
+
     public Integer id;
 
     @Column (name = "nome")
@@ -25,6 +26,13 @@ public class UsuarioModel {
     @Column  (name = "data_criacao")
     public LocalDateTime dataCriacao;
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getEmail() {
         return email;
