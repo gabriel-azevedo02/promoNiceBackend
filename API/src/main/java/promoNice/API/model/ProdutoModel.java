@@ -26,7 +26,7 @@ public class ProdutoModel {
     private String urlProduto;
 
 
-    @OneToMany(mappedBy = "produtos", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "produtos", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PromocaoModel> promocoes;
 
     // Getters e Setters

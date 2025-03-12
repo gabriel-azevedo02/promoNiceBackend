@@ -1,5 +1,6 @@
 package promoNice.API.controller;
 
+import java.util.ArrayList;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import promoNice.API.repository.UsuarioRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/produtos")
@@ -90,21 +92,38 @@ public class ProdutoController {
     // Método para atualizar um produto existente
     @PutMapping("alterar/{id}")
     public ResponseEntity<ProdutoDTO> alterar(@PathVariable Integer id, @RequestBody ProdutoDTO produtoAtualizadoDTO) {
-        return produtoRepository.findById(id).map(produtoExistente -> {
-            // Atualizar os campos
+        ProdutoModel produtoExistente = produtoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+
+        // Atualiza os campos básicos apenas se os valores não forem nulos
+        if (produtoAtualizadoDTO.getNome() != null) {
             produtoExistente.setNome(produtoAtualizadoDTO.getNome());
+        }
+        if (produtoAtualizadoDTO.getDescricao() != null) {
             produtoExistente.setDescricao(produtoAtualizadoDTO.getDescricao());
+        }
+        if (produtoAtualizadoDTO.getUrlProduto() != null) {
             produtoExistente.setUrlProduto(produtoAtualizadoDTO.getUrlProduto());
+        }
 
-            // Atualizar promoções, se necessário (opcional, dependendo da lógica)
-            if (produtoAtualizadoDTO.getPromocoes() != null) {
-                produtoExistente.setPromocoes(produtoAtualizadoDTO.getPromocoes().stream().map(promocaoDTO -> modelMapper.map(promocaoDTO, PromocaoModel.class)).toList());
-            }
+        // Atualizar promoções mantendo a referência do produto
+        if (produtoAtualizadoDTO.getPromocoes() != null) {
+            produtoExistente.getPromocoes().clear(); // Remove promoções antigas
+            List<PromocaoModel> novasPromocoes = produtoAtualizadoDTO.getPromocoes().stream()
+                    .map(promocaoDTO -> {
+                        PromocaoModel promocao = modelMapper.map(promocaoDTO, PromocaoModel.class);
+                        promocao.setProduto(produtoExistente); // Mantém a relação
+                        return promocao;
+                    })
+                    .collect(Collectors.toList());
 
-            ProdutoModel produtoSalvo = produtoRepository.save(produtoExistente);
-            ProdutoDTO produtoSalvoDTO = modelMapper.map(produtoSalvo, ProdutoDTO.class);
-            return ResponseEntity.ok(produtoSalvoDTO);
-        }).orElse(ResponseEntity.notFound().build());
+            produtoExistente.getPromocoes().addAll(novasPromocoes); // Adiciona novas promoções
+        }
+
+        ProdutoModel produtoSalvo = produtoRepository.save(produtoExistente);
+        ProdutoDTO produtoSalvoDTO = modelMapper.map(produtoSalvo, ProdutoDTO.class);
+
+        return ResponseEntity.ok(produtoSalvoDTO);
     }
 
     // Método para deletar um produto por ID
