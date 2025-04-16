@@ -25,7 +25,7 @@ public class ProdutoModel {
     @Column(name = "url_produto")
     private String urlProduto;
 
-
+    @JsonManagedReference
     @OneToMany(mappedBy = "produtos", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PromocaoModel> promocoes;
 

@@ -17,6 +17,7 @@ public class PromocaoModel {
 
     @ManyToOne
     @JoinColumn(name = "produto_id")
+    @JsonBackReference
     private ProdutoModel produtos;
 
     @ManyToOne
