@@ -14,8 +14,8 @@ public class CorsConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**") // Permite todas as rotas
                         .allowedOrigins("http://localhost:4200") // Frontend
-                        .allowedOrigins("https://promonice.vercel.app")
-                        .allowedOrigins("https://promonice-aievus-projects.vercel.app")
+                        .allowedOrigins("https://promonice1.vercel.app")
+                        .allowedOrigins("https://promonice1-aievus-projects.vercel.app")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Métodos permitidos
                         .allowedHeaders("*"); // Permitir todos os headers
             }
