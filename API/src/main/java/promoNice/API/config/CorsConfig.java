@@ -16,7 +16,6 @@ public class CorsConfig {
                         .allowedOrigins("http://localhost:4200") // Frontend
                         .allowedOrigins("https://promonice1.vercel.app")
                         .allowedOrigins("https://promonice1-aievus-projects.vercel.app")
-                        .allowedOrigins("https://promonice-api-hcfzadffezbth8g7.brazilsouth-01.azurewebsites.net")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Métodos permitidos
                         .allowedHeaders("*"); // Permitir todos os headers
             }
