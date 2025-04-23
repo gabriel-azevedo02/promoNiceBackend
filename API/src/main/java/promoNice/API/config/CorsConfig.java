@@ -12,15 +12,17 @@ public class CorsConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**") // Permite todas as rotas
-                        .allowedOrigins("http://localhost:4200") // Frontend
-                        .allowedOrigins("https://promonice3.vercel.app")
-                        .allowedOrigins("https://promonice3-aievus-projects.vercel.app")
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Métodos permitidos
-                        .allowedHeaders("*"); // Permitir todos os headers
+                registry.addMapping("/*")
+                        .allowedOrigins(
+                                "http://localhost:4200/",
+                                "https://promonice3.vercel.app/",
+                                "https://promonice3-aievus-projects.vercel.app/"
+                        )
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedHeaders("") // permite todos os headers
+                        .allowCredentials(true); // se for necessário
             }
         };
     }
-
-
 }
+
