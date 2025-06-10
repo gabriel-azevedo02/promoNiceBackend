@@ -67,8 +67,7 @@ public class ProdutoController {
         // Recupera o usuário pelo ID
         UsuarioModel usuario = usuarioRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
-        // Converte o ProdutoDTO para ProdutoModel
-        ModelMapper modelMapper = new ModelMapper();
+
         ProdutoModel produto = modelMapper.map(produtoDTO, ProdutoModel.class);
 
         // Define as promoções, se existirem, e estabelece a relação com o usuário
