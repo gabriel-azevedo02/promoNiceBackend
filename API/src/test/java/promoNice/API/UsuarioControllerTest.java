@@ -103,7 +103,7 @@ public class UsuarioControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(usuario)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(10L)))
+                .andExpect(jsonPath("$.id", is(10)))
                 .andExpect(jsonPath("$.nome", is("Ana")))
                 .andExpect(jsonPath("$.email", is("ana@email.com")));
 
