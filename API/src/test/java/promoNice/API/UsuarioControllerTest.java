@@ -36,7 +36,7 @@ public class UsuarioControllerTest {
     @Test
     void listarPorId_deveRetornarUsuario_quandoExistir() throws Exception {
         UsuarioModel usuario = new UsuarioModel();
-        usuario.setId(1);
+        usuario.setId(1L);
         usuario.setNome("João");
         usuario.setEmail("joao@email.com");
         usuario.setSenha("123");
@@ -61,13 +61,13 @@ public class UsuarioControllerTest {
     @Test
     void listarTodos_deveRetornarListaDeUsuarios() throws Exception {
         UsuarioModel u1 = new UsuarioModel();
-        u1.setId(1);
+        u1.setId(1L);
         u1.setNome("João");
         u1.setEmail("joao@email.com");
         u1.setSenha("123");
 
         UsuarioModel u2 = new UsuarioModel();
-        u2.setId(2);
+        u2.setId(2L);
         u2.setNome("Maria");
         u2.setEmail("maria@email.com");
         u2.setSenha("abc");
@@ -89,7 +89,7 @@ public class UsuarioControllerTest {
         usuario.setSenha("senha");
 
         UsuarioModel usuarioSalvo = new UsuarioModel();
-        usuarioSalvo.setId(10);
+        usuarioSalvo.setId(10L);
         usuarioSalvo.setNome("Ana");
         usuarioSalvo.setEmail("ana@email.com");
         usuarioSalvo.setSenha("senha");
@@ -118,7 +118,7 @@ public class UsuarioControllerTest {
     @Test
     void alterar_deveAtualizarUsuario_quandoExistir() throws Exception {
         UsuarioModel usuarioExistente = new UsuarioModel();
-        usuarioExistente.setId(1);
+        usuarioExistente.setId(1L);
         usuarioExistente.setNome("Velho Nome");
         usuarioExistente.setEmail("velho@email.com");
         usuarioExistente.setSenha("123");
@@ -129,7 +129,7 @@ public class UsuarioControllerTest {
         usuarioAtualizado.setSenha("abc");
 
         UsuarioModel usuarioSalvo = new UsuarioModel();
-        usuarioSalvo.setId(1);
+        usuarioSalvo.setId(1L);
         usuarioSalvo.setNome("Novo Nome");
         usuarioSalvo.setEmail("novo@email.com");
         usuarioSalvo.setSenha("abc");
@@ -172,7 +172,7 @@ public class UsuarioControllerTest {
     @Test
     void deletar_deveRemoverUsuario_quandoExistir() throws Exception {
         UsuarioModel usuario = new UsuarioModel();
-        usuario.setId(1);
+        usuario.setId(1L);
         usuario.setNome("Usuário");
         usuario.setEmail("usuario@email.com");
         usuario.setSenha("123");

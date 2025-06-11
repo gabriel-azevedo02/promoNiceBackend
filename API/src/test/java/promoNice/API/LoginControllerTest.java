@@ -36,7 +36,7 @@ class LoginControllerTest {
         loginDTO.setSenha("senha123");
 
         UsuarioModel usuario = new UsuarioModel();
-        usuario.setId(1);
+        usuario.setId(1L);
         usuario.setNome("Ana");
         usuario.setEmail("ana@email.com");
 

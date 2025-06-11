@@ -106,7 +106,7 @@ public class ProdutoControllerTest {
         produtoModel.setDescricao("Descrição");
 
         UsuarioModel usuario = new UsuarioModel();
-        usuario.setId(1);
+        usuario.setId(1L);
 
         ProdutoModel salvo = new ProdutoModel();
         salvo.setId(10L);
