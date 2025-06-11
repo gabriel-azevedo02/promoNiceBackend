@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import promoNice.API.dto.ProdutoDTO;
@@ -12,6 +13,7 @@ import promoNice.API.model.ProdutoModel;
 import promoNice.API.model.PromocaoModel;
 import promoNice.API.model.UsuarioModel;
 import promoNice.API.repository.ProdutoRepository;
+import promoNice.API.repository.PromocaoRepository;
 import promoNice.API.repository.UsuarioRepository;
 
 import java.util.List;
@@ -30,6 +32,9 @@ public class ProdutoController {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private PromocaoRepository promocaoRepository;
 
 
     @GetMapping("/listar-todos")
@@ -90,9 +95,18 @@ public class ProdutoController {
 
     // Método para atualizar um produto existente
     @PutMapping("alterar/{id}")
-    public ResponseEntity<ProdutoDTO> alterar(@PathVariable Integer id, @RequestBody ProdutoDTO produtoAtualizadoDTO) {
+    public ResponseEntity<?> alterar(@PathVariable Integer id, @RequestBody ProdutoDTO produtoAtualizadoDTO,  @RequestHeader("usuario-id") Long usuarioId) {
         ProdutoModel produtoExistente = produtoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+
+        // Validação - verificar se todas as promoções pertencem ao usuário
+        boolean todasSaoDoUsuario = produtoExistente.getPromocoes().stream()
+                .allMatch(promocao -> promocao.getUsuario().getId().equals(usuarioId));
+
+        if (!todasSaoDoUsuario) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body("Você não tem permissão para alterar este produto pois não é dono de todas as promoções.");
+        }
 
         // Atualiza os campos básicos apenas se os valores não forem nulos
         if (produtoAtualizadoDTO.getNome() != null) {
@@ -127,13 +141,34 @@ public class ProdutoController {
 
     // Método para deletar um produto por ID
     @DeleteMapping("deletar/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable Integer id) {
-        if (produtoRepository.existsById(id)) {
-            produtoRepository.deleteById(id);
-            return ResponseEntity.noContent().build();
-        } else {
+    public ResponseEntity<?> deletar(
+            @PathVariable Integer id,
+            @RequestHeader("usuario-id") Long usuarioId) {
+
+        // Verifica se o produto existe
+        Optional<ProdutoModel> produtoOptional = produtoRepository.findById(id);
+        if (produtoOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
+
+        // Busca a promoção associada a esse produto
+        Optional<PromocaoModel> promocaoOptional = promocaoRepository.findByProdutos_Id(id.longValue());
+
+        if (promocaoOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Promoção não encontrada para este produto.");
+        }
+
+        PromocaoModel promocao = promocaoOptional.get();
+
+        // Verifica se o usuário da promoção é o mesmo do header
+        if (!promocao.getUsuario().getId().equals(usuarioId)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body("Você não tem permissão para excluir esse produto.");
+        }
+
+        // Tudo certo, pode excluir o produto
+        produtoRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 
 }
