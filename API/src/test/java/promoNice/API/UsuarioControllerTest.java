@@ -41,7 +41,7 @@ public class UsuarioControllerTest {
         usuario.setEmail("joao@email.com");
         usuario.setSenha("123");
 
-        when(usuarioRepository.findById(1)).thenReturn(Optional.of(usuario));
+        when(usuarioRepository.findById(1L)).thenReturn(Optional.of(usuario));
 
         mockMvc.perform(get("/api/usuario/listar-por/1"))
                 .andExpect(status().isOk())
@@ -52,7 +52,7 @@ public class UsuarioControllerTest {
 
     @Test
     void listarPorId_deveRetornarNotFound_quandoNaoExistir() throws Exception {
-        when(usuarioRepository.findById(1)).thenReturn(Optional.empty());
+        when(usuarioRepository.findById(1L)).thenReturn(Optional.empty());
 
         mockMvc.perform(get("/api/usuario/listar-por/1"))
                 .andExpect(status().isNotFound());
@@ -103,7 +103,7 @@ public class UsuarioControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(usuario)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(10)))
+                .andExpect(jsonPath("$.id", is(10L)))
                 .andExpect(jsonPath("$.nome", is("Ana")))
                 .andExpect(jsonPath("$.email", is("ana@email.com")));
 
@@ -134,7 +134,7 @@ public class UsuarioControllerTest {
         usuarioSalvo.setEmail("novo@email.com");
         usuarioSalvo.setSenha("abc");
 
-        when(usuarioRepository.findById(1)).thenReturn(Optional.of(usuarioExistente));
+        when(usuarioRepository.findById(1L)).thenReturn(Optional.of(usuarioExistente));
         when(usuarioRepository.save(any(UsuarioModel.class))).thenReturn(usuarioSalvo);
 
         ArgumentCaptor<UsuarioModel> captor = ArgumentCaptor.forClass(UsuarioModel.class);
@@ -161,7 +161,7 @@ public class UsuarioControllerTest {
         usuarioAtualizado.setEmail("novo@email.com");
         usuarioAtualizado.setSenha("abc");
 
-        when(usuarioRepository.findById(1)).thenReturn(Optional.empty());
+        when(usuarioRepository.findById(1L)).thenReturn(Optional.empty());
 
         mockMvc.perform(put("/api/usuario/alterar/1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -177,7 +177,7 @@ public class UsuarioControllerTest {
         usuario.setEmail("usuario@email.com");
         usuario.setSenha("123");
 
-        when(usuarioRepository.findById(1)).thenReturn(Optional.of(usuario));
+        when(usuarioRepository.findById(1L)).thenReturn(Optional.of(usuario));
         doNothing().when(usuarioRepository).delete(any(UsuarioModel.class));
 
         ArgumentCaptor<UsuarioModel> captor = ArgumentCaptor.forClass(UsuarioModel.class);
@@ -193,7 +193,7 @@ public class UsuarioControllerTest {
 
     @Test
     void deletar_deveRetornarNotFound_quandoNaoExistir() throws Exception {
-        when(usuarioRepository.findById(1)).thenReturn(Optional.empty());
+        when(usuarioRepository.findById(1L)).thenReturn(Optional.empty());
 
         mockMvc.perform(delete("/api/usuario/deletar/1"))
                 .andExpect(status().isNotFound());

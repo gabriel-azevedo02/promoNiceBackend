@@ -61,7 +61,7 @@ public class ProdutoControllerTest {
 
         mockMvc.perform(get("/api/produtos/listar-todos"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id").value(1))
+                .andExpect(jsonPath("$[0].id").value(1L))
                 .andExpect(jsonPath("$[0].nome").value("Produto Teste"))
                 .andExpect(jsonPath("$[0].descricao").value("Descrição"))
                 .andExpect(jsonPath("$[0].urlProduto").value("http://imagem.com"));
@@ -77,7 +77,7 @@ public class ProdutoControllerTest {
         produtoDTO.setId(1L);
         produtoDTO.setNome("Produto Teste");
 
-        when(produtoRepository.findById(1)).thenReturn(java.util.Optional.of(produtoModel));
+        when(produtoRepository.findById(1L)).thenReturn(java.util.Optional.of(produtoModel));
         when(modelMapper.map(produtoModel, ProdutoDTO.class)).thenReturn(produtoDTO);
 
         mockMvc.perform(get("/api/produtos/listar-por/1"))
@@ -89,7 +89,7 @@ public class ProdutoControllerTest {
     @Test
     void buscarPorId_deveRetornar404_quandoIdInvalido() throws Exception {
         // Simula que nenhum produto foi encontrado com o ID fornecido
-        when(produtoRepository.findById(999)).thenReturn(Optional.empty());
+        when(produtoRepository.findById(999L)).thenReturn(Optional.empty());
 
         mockMvc.perform(get("/api/produtos/listar-por/999"))
                 .andExpect(status().isNotFound());
@@ -116,7 +116,7 @@ public class ProdutoControllerTest {
         salvoDTO.setId(10L);
         salvoDTO.setNome("Produto Novo");
 
-        when(usuarioRepository.findById(1)).thenReturn(java.util.Optional.of(usuario));
+        when(usuarioRepository.findById(1L)).thenReturn(java.util.Optional.of(usuario));
         when(modelMapper.map(any(ProdutoDTO.class), eq(ProdutoModel.class))).thenReturn(produtoModel);
         when(produtoRepository.save(any(ProdutoModel.class))).thenReturn(salvo);
         when(modelMapper.map(any(ProdutoModel.class), eq(ProdutoDTO.class))).thenReturn(salvoDTO);
@@ -160,7 +160,7 @@ public class ProdutoControllerTest {
         salvoDTO.setId(1L);
         salvoDTO.setNome("Atualizado");
 
-        when(produtoRepository.findById(1)).thenReturn(java.util.Optional.of(existente));
+        when(produtoRepository.findById(1L)).thenReturn(java.util.Optional.of(existente));
         when(produtoRepository.save(existente)).thenReturn(salvo);
         when(modelMapper.map(salvo, ProdutoDTO.class)).thenReturn(salvoDTO);
 
@@ -181,7 +181,7 @@ public class ProdutoControllerTest {
 
     @Test
     void deletar_deveRetornarNoContent_quandoIdValido() throws Exception {
-        when(produtoRepository.existsById(1)).thenReturn(true);
+        when(produtoRepository.existsById(1L)).thenReturn(true);
 
         mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders
                         .delete("/api/produtos/deletar/1"))
@@ -190,7 +190,7 @@ public class ProdutoControllerTest {
 
     @Test
     void deletar_deveRetornarNotFound_quandoIdInvalido() throws Exception {
-        when(produtoRepository.existsById(999)).thenReturn(false);
+        when(produtoRepository.existsById(999L)).thenReturn(false);
 
         mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders
                         .delete("/api/produtos/deletar/999"))
