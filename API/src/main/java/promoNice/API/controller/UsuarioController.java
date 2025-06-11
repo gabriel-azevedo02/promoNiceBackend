@@ -17,7 +17,7 @@ public class UsuarioController {
     // Método GET listar por id
 
     @GetMapping(path = "/api/usuario/listar-por/{idUsuarios}")
-    public ResponseEntity consultar(@PathVariable("idUsuarios") Integer idUsuarios) {
+    public ResponseEntity consultar(@PathVariable("idUsuarios") Long idUsuarios) {
         return usuarioRepository.findById(idUsuarios)
                 .map(record -> ResponseEntity.ok().body(record))
                 .orElse(ResponseEntity.notFound().build());
@@ -40,7 +40,7 @@ public class UsuarioController {
     //Método PUT alterar
 
     @PutMapping("/api/usuario/alterar/{id}")
-    public ResponseEntity<UsuarioModel> alterar(@PathVariable Integer id, @RequestBody UsuarioModel usuarioAtualizado) {
+    public ResponseEntity<UsuarioModel> alterar(@PathVariable Long id, @RequestBody UsuarioModel usuarioAtualizado) {
         return usuarioRepository.findById(id)
                 .map(usuarioExistente -> {
                     // Atualizar os campos
@@ -56,7 +56,7 @@ public class UsuarioController {
     //Método deletar
 
     @DeleteMapping("/api/usuario/deletar/{id}")
-    public ResponseEntity<Object> deletar(@PathVariable Integer id) {
+    public ResponseEntity<Object> deletar(@PathVariable Long id) {
         return usuarioRepository.findById(id)
                 .map(usuario -> {
                     usuarioRepository.delete(usuario);

@@ -55,7 +55,7 @@ public class ProdutoController {
 
     // Método para buscar um produto por ID
     @GetMapping("/listar-por/{id}")
-    public ResponseEntity<ProdutoDTO> buscarPorId(@PathVariable Integer id) {
+    public ResponseEntity<ProdutoDTO> buscarPorId(@PathVariable Long id) {
         Optional<ProdutoModel> produto = produtoRepository.findById(id);
         if (produto.isPresent()) {
             ProdutoDTO produtoDTO = modelMapper.map(produto.get(), ProdutoDTO.class);
@@ -67,7 +67,7 @@ public class ProdutoController {
 
     // Método para cadastrar um novo produto
     @PostMapping("/cadastrar/{id}")
-    public ResponseEntity<ProdutoDTO> cadastrar(@RequestBody ProdutoDTO produtoDTO, @PathVariable Integer id) {
+    public ResponseEntity<ProdutoDTO> cadastrar(@RequestBody ProdutoDTO produtoDTO, @PathVariable Long id) {
 
         // Recupera o usuário pelo ID
         UsuarioModel usuario = usuarioRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
@@ -95,7 +95,7 @@ public class ProdutoController {
 
     // Método para atualizar um produto existente
     @PutMapping("alterar/{id}")
-    public ResponseEntity<?> alterar(@PathVariable Integer id, @RequestBody ProdutoDTO produtoAtualizadoDTO,  @RequestHeader("usuario-id") Long usuarioId) {
+    public ResponseEntity<?> alterar(@PathVariable Long id, @RequestBody ProdutoDTO produtoAtualizadoDTO,  @RequestHeader("usuario-id") Long usuarioId) {
         ProdutoModel produtoExistente = produtoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
 
@@ -142,7 +142,7 @@ public class ProdutoController {
     // Método para deletar um produto por ID
     @DeleteMapping("deletar/{id}")
     public ResponseEntity<?> deletar(
-            @PathVariable Integer id,
+            @PathVariable Long id,
             @RequestHeader("usuario-id") Long usuarioId) {
 
         // Verifica se o produto existe
