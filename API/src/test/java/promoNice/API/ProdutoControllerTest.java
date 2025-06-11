@@ -20,6 +20,7 @@ import promoNice.API.dto.ProdutoDTO;
 import promoNice.API.model.ProdutoModel;
 import promoNice.API.model.UsuarioModel;
 import promoNice.API.repository.ProdutoRepository;
+import promoNice.API.repository.PromocaoRepository;
 import promoNice.API.repository.UsuarioRepository;
 
 import java.util.List;
@@ -37,6 +38,9 @@ public class ProdutoControllerTest {
 
     @MockBean
     private UsuarioRepository usuarioRepository;
+
+    @MockBean
+    private PromocaoRepository promocaoRepository;
 
     @MockBean
     private ModelMapper modelMapper;
@@ -61,7 +65,7 @@ public class ProdutoControllerTest {
 
         mockMvc.perform(get("/api/produtos/listar-todos"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id").value(1L))
+                .andExpect(jsonPath("$[0].id").value(1))
                 .andExpect(jsonPath("$[0].nome").value("Produto Teste"))
                 .andExpect(jsonPath("$[0].descricao").value("Descrição"))
                 .andExpect(jsonPath("$[0].urlProduto").value("http://imagem.com"));
