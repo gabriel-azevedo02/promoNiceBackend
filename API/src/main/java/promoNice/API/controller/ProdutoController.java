@@ -15,6 +15,7 @@ import promoNice.API.model.UsuarioModel;
 import promoNice.API.repository.ProdutoRepository;
 import promoNice.API.repository.PromocaoRepository;
 import promoNice.API.repository.UsuarioRepository;
+import promoNice.API.service.ProdutoService;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,6 +36,9 @@ public class ProdutoController {
 
     @Autowired
     private PromocaoRepository promocaoRepository;
+
+    @Autowired
+    private ProdutoService produtoService;
 
 
     @GetMapping("/listar-todos")
@@ -169,6 +173,20 @@ public class ProdutoController {
         // Tudo certo, pode excluir o produto
         produtoRepository.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/buscar")
+    public ResponseEntity<List<ProdutoDTO>> buscarProdutos(@RequestParam(defaultValue = "") String filtro) {
+        modelMapper.typeMap(PromocaoModel.class, PromocaoDTO.class)
+                .addMappings(mapper -> mapper.skip(PromocaoDTO::setProduto));
+
+        List<ProdutoModel> produtos = produtoService.buscarPorNome(filtro);
+
+        List<ProdutoDTO> produtosDTO = produtos.stream()
+                .map(produto -> modelMapper.map(produto, ProdutoDTO.class))
+                .toList();
+
+        return ResponseEntity.ok(produtosDTO);
     }
 
 }

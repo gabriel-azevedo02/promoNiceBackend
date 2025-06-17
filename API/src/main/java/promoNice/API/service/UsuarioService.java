@@ -17,4 +17,6 @@ public class UsuarioService {
         // Verificar o usuário no banco de dados
         return usuarioRepository.findByEmailAndSenha(email, senha);
     }
+
+
 }
