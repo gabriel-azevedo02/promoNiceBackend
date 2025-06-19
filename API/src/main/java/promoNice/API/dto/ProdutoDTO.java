@@ -1,8 +1,10 @@
 package promoNice.API.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import promoNice.API.model.ProdutoModel;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ProdutoDTO {
 
@@ -12,8 +14,38 @@ public class ProdutoDTO {
     private String urlProduto;
     @JsonIgnoreProperties("produto")
     private List<PromocaoDTO> promocoes;
+    private boolean favorito;
+
+
+    public static ProdutoDTO fromModel(ProdutoModel produto) {
+        ProdutoDTO dto = new ProdutoDTO();
+        dto.setId(produto.getId());
+        dto.setNome(produto.getNome());
+        dto.setDescricao(produto.getDescricao());
+        dto.setUrlProduto(produto.getUrlProduto());
+        dto.setFavorito(false);
+
+        if (produto.getPromocoes() != null) {
+            dto.setPromocoes(
+                    produto.getPromocoes()
+                            .stream()
+                            .map(PromocaoDTO::fromModel)
+                            .collect(Collectors.toList())
+            );
+        }
+
+        return dto;
+    }
 
     // Getters e Setters
+    public boolean isFavorito() {
+        return favorito;
+    }
+
+    public void setFavorito(boolean favorito) {
+        this.favorito = favorito;
+    }
+
     public Long getId() {
         return id;
     }

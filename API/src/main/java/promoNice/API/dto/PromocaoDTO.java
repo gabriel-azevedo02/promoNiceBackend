@@ -1,8 +1,11 @@
 package promoNice.API.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import promoNice.API.model.ProdutoModel;
+import promoNice.API.model.PromocaoModel;
 
 import java.time.LocalDate;
+import java.util.stream.Collectors;
 
 public class PromocaoDTO {
 
@@ -14,6 +17,15 @@ public class PromocaoDTO {
     private LocalDate dataInicio;
     private LocalDate dataFim;
     private String urlPromocao;
+
+    public static PromocaoDTO fromModel(PromocaoModel promocao) {
+        PromocaoDTO dto = new PromocaoDTO();
+        dto.setPreco(promocao.getPreco());
+        dto.setUrlPromocao(promocao.getUrlPromocao());
+        dto.setUsuario(UsuarioDTO.fromModel(promocao.getUsuario()));
+        dto.setUsuario(UsuarioDTO.fromModel(promocao.getUsuario()));// se necessário
+        return dto;
+    }
 
     // Getters e Setters
     public Long getId() {
