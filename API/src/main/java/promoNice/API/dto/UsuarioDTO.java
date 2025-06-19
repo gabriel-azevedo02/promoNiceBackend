@@ -1,20 +1,34 @@
 package promoNice.API.dto;
 
+import promoNice.API.model.UsuarioModel;
+
 import java.time.LocalDateTime;
 
 public class UsuarioDTO {
 
-    private Integer id;
+    private Long id;
     private String nome;
     private String email;
     private LocalDateTime dataCriacao;
 
+    public static UsuarioDTO fromModel(UsuarioModel usuario) {
+        if (usuario == null) return null;
+
+        UsuarioDTO dto = new UsuarioDTO();
+        dto.setId(usuario.getId());
+        dto.setNome(usuario.getNome());
+        dto.setEmail(usuario.getEmail());
+        dto.setDataCriacao(usuario.getDataCriacao());
+
+        return dto;
+    }
+
     // Getters e Setters
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

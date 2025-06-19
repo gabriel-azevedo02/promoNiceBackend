@@ -26,7 +26,7 @@ public class ProdutoModel {
     private String urlProduto;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "produtos", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "produtos", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PromocaoModel> promocoes;
 
     // Getters e Setters

@@ -35,7 +35,7 @@ public class PromocaoModel {
     @Column(name = "data_fim")
     private LocalDate dataFim;
 
-    @Column(name = "url_promocao")
+    @Column(name = "url_promocao", length = 1000)
     private String urlPromocao;
 
     // Getters e Setters
